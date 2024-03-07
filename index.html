@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            margin: 10px 0;
+            border-collapse: collapse;
+            width: 500px;
+        }
+
+        td {
+            border: 1px solid rgb(51, 51, 51);
+            width: 100px;
+            height: 100px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table></table>
+
+    <script>
+        const tbl = document.querySelector('table');
+        let kod = '';
+        let arr = [];
+        let bos = [4, 4];
+        let x = 0;
+        let you = ' YOU ';
+        let won = '  WON';
+        for (i = 1; i <= 15; i++) { arr.push(i); }
+        arr.push('');
+
+        for (i = 1; i <= 4; i++) {
+            kod += '<tr>';
+            for (j = 1; j <= 4; j++) {
+                kod += `<td id='c${i}${j}' onclick='yoxla(${i}, ${j})'> ${arr[x++]} </td>`;
+            }
+            kod += '</tr>';
+        }
+        tbl.innerHTML = kod;
+        let td = document.querySelectorAll('td');
+
+        for (let z = 1; z < 2000; z++) {
+            let i = rand(1, 4);
+            let j = rand(1, 4);
+            deyis(i, j);
+        }
+
+        function deyis(i, j) {
+            if ((Math.abs(i - bos[0]) == 1 && j == bos[1]) || (i == bos[0] && Math.abs(j - bos[1]) == 1)) {
+                let xana1 = document.getElementById(`c${i}${j}`);
+                let xana2 = document.getElementById(`c${bos[0]}${bos[1]}`);
+                xana2.innerHTML = xana1.innerHTML;
+                xana1.innerHTML = '';
+                bos = [i, j];
+            }
+        }
+
+        function yoxla(i, j) {
+            deyis(i, j);
+            let hell = 1;
+            for (let t = 0; t < arr.length - 1; t++) {
+                if (Number(td[t].innerHTML) !== t + 1) {
+                    hell = 2;                    
+                }
+            }
+
+            if (hell==1 && td[15].innerHTML === '') {
+                kod = '';
+                for (let p = 1; p <= 4; p++) {
+                    kod += '<tr>';
+                    for (let q = 1; q <= 4; q++) {
+                        let r = rand(1, 256);
+                        let g = rand(1, 256);
+                        let b = rand(1, 256);
+                        text = p === 2 ? you[q] : p === 3 ? won[q] : '';
+                        kod += `<td bgcolor="rgb(${r}, ${g}, ${b})" style="color: white">${text}</td>`;
+                    }
+                    kod += '</tr>';
+                }
+                tbl.innerHTML = kod;
+            }
+
+        }
+
+        function rand(min, max) {
+            let z = Math.floor((max - min + 1) * Math.random()) + min;
+            return z;
+        }
+
+    </script>
+</body>
+
+</html>
